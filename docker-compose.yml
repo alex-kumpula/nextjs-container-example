@@ -1,0 +1,22 @@
+# docker-compose.yml
+
+version: "3.8"
+
+services:
+  nextapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextapp
+    restart: always
+    volumes:
+      - type: bind
+        # The env variable ${LOCAL_WORKSPACE_FOLDER} passes the 
+        # host workspace path to the devcontainer so that 
+        # docker-from-docker can be used in the devcontainer
+        source: ${LOCAL_WORKSPACE_FOLDER:-.}
+        target: /app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000
